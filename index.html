@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+	<head>
+        <title>W3C ODRL Music Profile</title>
+        
+    <meta content="text/html; charset=utf-8" http-equiv="content-type" />
+    <meta content="width=device-width,initial-scale=1" name="viewport" />
+    <!--
+    <script class="remove" src="https://www.w3.org/Tools/respec/respec-w3c-common"></script>
+    -->
+    <script class="remove" src="https://rightschain.github.io/respec/builds/respec-w3c-common.js" defer></script>
+    <script class="remove" src="config.js"></script>
+        
+	</head>
+	<body>
+        
+    <section id="abstract" class="informative">
+		<p>This specification outlines a Profile of the W3C ODRL policy expression language for the music industry.</p>
+            
+     
+        </section>
+	
+        
+        <h2>Status of this Document</h2>
+          <p>This is a work in progress. No section should be considered final, and the absence of any content does not imply that such content is out of scope, or may not appear in the future. If you feel something should be covered, updated, or removed, then please tell the editors.</p>  
+            
+		
+        <section id="conformance"></section>
+        
+    
+        
+        <section id="intro" class="informative">
+		 <h1>Introduction</h1>       
+                
+<p>The W3C ODRL policy expression language enables Profiles to be created by communities to provide specific details on how to express policies relevant to their business cases. The specification defines the ODRL Music Profile by including specific music business use cases and how they should be expressed. In doing so, the ODRL Music Profile presents precise semantics for music use cases, and defines the scope of the existing ODRL information model and vocabulary that should be supported.</p>
+            
+        </section>
+
+         
+        <section id="profile">
+		 <h1>ODRL Music Profile</h1>
+            
+            <P>The ODRL Music Profile MUST support the ODRL Information Model [[!ODRL-MODEL]] and ODRL Vocabulary & Expression [[!VOCAB-ODRL]] specifications.</P>
+            
+            <p>The ODRL Music Profile MUST support the JSON-LD encoding.</p>
+            
+            <p>
+              The ODRL Music Profile defines the following identifier that MUST be used in all ODRL expressions to indicate it is following the rules of this specification:          
+            </p>
+            <p><code>http://dotbc.info/music/</code></p>
+            <p>
+            ADD HERE
+                Provenance?
+                Conflict/undefined?
+                Inheritance?
+            
+            </p>
+
+<p>Example below...</p>
+            
+<pre class="example highlight hljs xquery">
+{
+    "@context": [ "odrl": "http://www.w3.org/ns/odrl/2/",
+                  "music": "http://dotbc.info/music/" ],
+    "profile": "http://dotbc.info/music/",
+    "@type": "odrl:Agreement",
+    "@id": "http://example.com/policy:8888",
+    "permission": [{
+        "target": "http://example.com/music/1999.mp3",
+        "assigner": "http://example.com/org/sony-music",
+        "assignee": "http://example.com/people/billie",
+        "action": "odrl:play",
+        "constraint": "...",
+        "duty": "..."
+        }]
+    }]
+}  
+</pre>
+            
+            
+        </section>               
+        
+        <section id="blanket">
+		 <h1>Blanket Licenses</h1>
+            
+        <p>Organisations that manage collections of musical works (such as Professional Rights Organisations) will typically license their entire catalogue to third parties for performance rights.</p>
+            
+            <p>Agreement V Offer</p>
+            
+            <p>Asset - refer to identifier of organisation catalogue AND use the "scope" with value <code>http://dotbc.info/music/catalogue</code></p>
+    
+            <p>License Period - use dateTime constraint</p>
+             
+            <p>Territory?</p>
+            
+            <p>Permission odrl:play</p>
+            
+            <p>New Constraint value: Define the <b>public</b> performance by constraining the play action to the recipient: <code>http://dotbc.info/music/public</code></p>
+            
+            <p>New Constraint operands: Many blanket licenses are based on various compensation methods for different purposes, for example:</p>
+                 <ul>
+            <li>Venues: a minimal fee or a percentage of annual gross receipts (the higher of the two).</li>
+            <li>Events: percentage of gross ticket sales or percentage of performers fee (if no entry fee).</li>
+             <li>Broadcasters: percentage of monthly gross income or operating costs.</li>
+            <li>Bars/Clubs: percentage of annual compensation paid to performers (or a minimum fee).</li>
+                     <li>Exhibitions: based on number of attendees per day.</li>
+                     <li>Theatres: based on number of seats per screen (annualy).</li>
+            </ul>
+            
+            <p>These use cases require new constraints (left operands) to enable the business rules to be expressed:</p>
+            <ul>
+            <li>grossRevenuePercentage - the percentage value of the gross revenue.</li>
+            <li>grossSubscriptionPercentage - the percentage value of the gross subscription revenue.</li>
+            <li>grossTicketPercentage - the percentage value of the gross ticket/admission sales.</li>
+            <li>grossPerformanceCompensation - the value of compensation paid to the performers.</li>
+            <li>numberAttendeesRate - the rate per number of attendees.</li>
+            <li>numberSeatsRate - the rate per number of seats.</li>
+            <li>numberDaysRate - the rate per days.</li>
+            <li>uniqueVisitor - the number of unique visitors. </li>
+            <li>totalStream - the total number of streams.</li>
+            </ul>
+            
+            <p>Processors of the ODRL Music Profile MUST support the consumption of the data variable used to calculate the above expressions. For example, the consumer MUST supply the gross revenue figure for their organisation to enable the grossRevenuePercentage expression to be successfully evaluated. </p>
+            
+            <p>Each of the above constraints (left operands) MUST be augmented with the <code>unit</code> property in order to precisely capture:</p>
+        <ul>
+        <li>The period over which the (revenue, ticket sales) amounts apply - use the and xsd:duration such as "P1Y" for annual. </li>
+        <li>?</li>
+        </ul>
+            
+            <p>The above use cases require new operators to ensure that the constraint logic is processed correctly:</p>
+            <ul>
+            <li>greaterValue - choose the constraint expression that returns the greater value.</li>
+            <li>lesserValue - choose the constraint expression that returns the lesser value.</li>
+            </ul>
+            
+            <p>Additional defined terms:</p>
+            <ul>
+            <li>music:internet - the service is offered over the internet/online.</li>
+            <li>music:genre:video - the genre of the asset is music video.</li>
+            <li>music:subscription:paid - a paid subscription service.</li>
+            <li>music:subscription:free - a free subscription service.</li>
+            </ul>
+
+            <blockquote>
+
+<p>Example: Blanket License for Skating Rinks. Permission is to play any catalogue works to the public, until the end of 2017. Skating rink must pay either $CAN104.31 or 1.2% of their gross annual ticket sales (whichever is highest).</p>
+            </blockquote>
+            
+<pre class="example highlight hljs xquery">
+{
+    "@context": [{ "odrl": "http://www.w3.org/ns/odrl/2/",
+                   "music": "http://dotbc.info/music/" }],
+    "@type": "odrl:Agreement",
+    "@id": "http://example.com/policy:8888",
+    "profile": "http://dotbc.info/music/",
+    "permission": {
+        "target": {
+                "@id": "http://example.com/org/pro/all-works",
+                "scope": "music:catalogue"	},
+        "assigner": "http://example.com/org/pro",
+        "assignee": "http://example.com/local-skating-rink",
+        "action": "odrl:play",
+        "constraint": [{
+                "leftOperand": "odrl:recipent",
+                "operator": "odrl:eq",
+                "rightOperand": "music:public" },
+            {
+                "leftOperand": "odrl:dateTime",
+                "operator": "odrl:lteq",
+                "rightOperand": "2017-12-31"
+            }],
+        "duty": {
+            "action": "odrl:compensate",
+            "constraint": {
+                "leftOperand": "http://example.com/policy:8888/C1",
+                "operator": "music:greaterValue",
+                "rightOperand": "http://example.com/policy:8888/C2",
+                "unit": "http://cvx.iptc.org/iso4217a/CAN"
+            }
+         }
+     },
+   "constraint": [{
+       "@id": "http://example.com/policy:8888/C1",
+       "leftOperand": "odrl:payAmount",
+       "operator": "odrl:eq",
+       "rightOperand": "104.31",
+       "datatype": "xsd:decimal"
+    },{
+       "@id": "http://example.com/policy:8888/C2",
+       "leftOperand": "music:grossTicketPercentage",
+       "operator": "odrl:eq",
+       "rightOperand": "1.2",
+       "datatype": "xsd:decimal",
+       "unit": "P1Y"
+   }]
+}  
+</pre>
+            
+            <p>The above example is sufficient to express the <i>Skating Rink</i> blank license from:</p>
+            <ul>
+                <li>SOCAN - <a href="http://www.socan.ca/tariff/Infocard_7_EN.pdf">Tarrif 7 Skating Rinks</a></li>
+                <li>APRA - <a href="http://apraamcos.com.au/media/Customers/GNR_Skating-Rink.pdf">Skating Rink</a></li>
+            </ul>
+   
+ <blockquote>           
+<p>Example: Blank License for Music Streaming (subscription). Paid streaming: 7.6%
+of amounts paid by subscribers; 5.02% for sites offering music videos only, Free streaming: the lesser of 50.67¢ per unique visitor or 0.13¢ for each stream. </p>
+</blockquote>
+            
+<pre class="example highlight hljs xquery">
+{
+    "@context": [{ "odrl": "http://www.w3.org/ns/odrl/2/",
+                   "music": "http://dotbc.info/music/" }],
+    "@type": "odrl:Agreement",
+    "@id": "http://example.com/policy:8888",
+    "profile": "http://dotbc.info/music/",
+    "assigner": "http://example.com/org/pro",
+    "assignee": "http://example.com/my-cool-streaming-service",
+    "action": "odrl:stream",
+    "permission": [{
+        "target": {
+                "@id": "http://example.com/org/pro/all-works",
+                "scope": "music:catalogue"
+                },
+        "constraint": [  "http://example.com/policy:8888/C1",
+                         "http://example.com/policy:8888/C2",
+                         "http://example.com/policy:8888/C3",
+                         {
+                         "leftOperand": "odrl:product",
+                         "operator": "odrl:eq",
+                         "rightOperand": "music:subscription:paid"
+                         }
+                       ],
+        "duty": {
+            "action": "odrl:compensate",
+            "constraint": {
+                 "leftOperand": "music:grossSubscriptionPercentage",
+                 "operator": "odrl:eq",
+                 "rightOperand": "7.6",
+                 "unit": ["http://cvx.iptc.org/iso4217a/CAN", "P1M"]
+            }
+         }
+     },
+     {
+       "target": { 
+                "@id": "http://example.com/org/pro/all-works",
+                "scope": ["music:catalogue", "music:genre:video"]
+                },
+        "constraint": [ "http://example.com/policy:8888/C1",
+                         "http://example.com/policy:8888/C2",
+                         "http://example.com/policy:8888/C3",
+                          {
+                         "leftOperand": "odrl:product",
+                         "operator": "odrl:eq",
+                         "rightOperand": "music:subscription:free"
+                         }
+                       ],
+        "duty": {
+            "action": "odrl:compensate",
+            "constraint": {
+                "leftOperand": "http://example.com/policy:8888/C4",
+                "operator": "music:lesserValue",
+                "rightOperand": "http://example.com/policy:8888/C5",
+                "unit": "http://cvx.iptc.org/iso4217a/CAN"
+            }
+         }
+    }],
+   "constraint": [{
+        "@id": "http://example.com/policy:8888/C1",
+        "leftOperand": "odrl:recipent",
+        "operator": "odrl:eq",
+        "rightOperand": "music:public" },
+        {
+        "@id": "http://example.com/policy:8888/C2",
+        "leftOperand": "odrl:dateTime",
+        "operator": "odrl:lteq",
+        "rightOperand": "2017-06-30"},
+        {
+        "@id": "http://example.com/policy:8888/C3",
+        "leftOperand": "odrl:deliveryChannel",
+        "operator": "odrl:lteq",
+        "rightOperand": "music:internet"},
+        {
+        "@id": "http://example.com/policy:8888/C4",
+        "leftOperand": "music:uniqueVisitor",
+        "operator": "odrl:eq",
+        "rightOperand": "0.5067",
+        "datatype": "xsd:decimal",
+        "unit": "P1M"},
+        {
+        "@id": "http://example.com/policy:8888/C5",
+        "leftOperand": "music:totalStream",
+        "operator": "odrl:eq",
+        "rightOperand": "0.0013",
+        "datatype": "xsd:decimal",
+        "unit": "P1M"}
+    ]
+} 
+</pre>
+            
+            <p>The above example is sufficient to express the <i>Streaming</i> blanket license from:</p>
+            <ul>
+                <li>SOCAN - <a href="http://www.socan.ca/tariff/Infocard_22A_EN.pdf">Tarrif 22A - Online Music Services</a></li>
+            </ul>
+     
+            
+            
+            
+        </section>  
+
+   <section id="royalty">
+		 <h1>Royalty Splits</h1>
+               
+<p>Royalty Splits are formal agreements between the creators of Compositions and with publishers to commercialise the works, such as to get a recording deal to fixate the Composition into a Recording.
+    As such, the Music Profile defines a new Policy Type (music:RoyaltySplit) as the semantics are slightly different from an o:Agreement (where there is the assigner/assignee relationship). The other Music Profile addition is the o:Performance action for the Permission, and there maybe others such as Mechanical, Synch etc (TBD).
+
+</p>
+ <blockquote>           
+<p>Example: The example below shows the ODRL Policy for a Royalty Split. The target is the Composition identified with the ISWC, and other MVD properties are expressed, including existing known recordings of the composition. The Permission action (public o:Performance) is constrained until the end of 2020 (end of contract) for a Global territory. There are three Parties that are obliged to be compensated (Note: who is the compensatingParty?). The primary author (Addie) will get 50%, Murphy (the composer) will get 30%, and Billie Music (the publisher) will get 20% of all royalty income.</p>
+</blockquote>      
+      
+    
+<pre class="example highlight hljs xquery">
+{
+    "@context": [  "o": "http://www.w3.org/ns/odrl/2/",
+                   "music": "http://dotbc.info/music/",
+                   "mvd": "http://dotbc.info/mvd/",
+                   "v": "http://www.w3.org/2006/vcard/ns#" ],
+    "@type": "music:RoyaltySplit",
+    "@id": "http://example.com/policy:8888",
+    "o:profile": "http://dotbc.info/music/",
+    "o:target": { "@type": "mvd:Composition",
+                  "@id": "http://iswc.info/T-034.524.680-1",
+                  "mvd:title": "Fly Me to the Moon",
+                  "mvd:duration": "P3:55Min",
+                  "mvd:date": "2017-01-01",
+                  "mvd:language": "en" 
+                  "mvd:realisedBy": [
+                       "http://isrc.info/AUVFJ1600001",
+                       "http://isrc.info/AUVFJ1600002" ]
+                },
+    "o:permission": {
+        "o:action": "o:Performance",
+        "o:constraint": [{
+                "o:leftOperand": "o:recipent",
+                "o:operator": "o:eq",
+                "o:rightOperand": "music:public" },
+                {
+                "o:leftOperand": "o:spatial",
+                "o:operator": "o:eq",
+                "o:rightOperand": "mvd:Global" },
+                {
+                "o:leftOperand": "odrl:dateTime",
+                "o:operator": "odrl:lteq",
+                "o:rightOperand": "2020-12-31"
+            }],
+        "o:duty": [{
+            "o:action": "o:compensate",
+            "o:compensatedParty": {
+                "@type": [ "o:Party", "v:Individual" ],
+                "@id": "ipi:socan:43523012",
+                "v:fn": "Addie Cents",
+                "v:hasEmail": "addie@cents.com",
+                "o:function": "http://cisac.org/role/A",
+                "mvd:pro": "http://socan.ca",},
+            "o:constraint": {
+                "o:leftOperand": "o:Percentage",
+                "o:operator": "o:eg",
+                "o:rightOperand": "50" },
+         },
+         {
+            "o:action": "o:compensate",
+            "o:compensatedParty": {
+                "@type": [ "o:Party", "v:Individual" ],
+                "@id": "ipi:apra:737373299",
+                "v:fn": "Murphy Boy",
+                "v:hasEmail": "murphy@boy.com",
+                "o:function": "http://cisac.org/role/CA",
+                "mvd:pro": "http://apra.org.au",},
+            "o:constraint": {
+                "o:leftOperand": "o:Percentage",
+                "o:operator": "o:eg",
+                "o:rightOperand": "30" },
+         },
+         {
+            "o:action": "o:compensate",
+            "o:compensatedParty": {
+                "@type": [ "o:Party", "v:Organisation" ],
+                "@id": "ipi:ascap:88811100",
+                "v:fn": "Billie Music",
+                "v:hasEmail": "billie@music.com",
+                "o:function": "http://cisac.org/role/E",
+                "mvd:pro": "http://ascap.org",},
+            "o:constraint": {
+                "o:leftOperand": "o:Percentage",
+                "o:operator": "o:eg",
+                "o:rightOperand": "20" },
+         }  
+     ]
+}  
+</pre>       
+        
+        
+        
+        
+        </section>
+        
+        
+        
+        
+        
+        
+        
+        
+	</body>
+</html>
+	
